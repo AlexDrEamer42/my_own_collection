@@ -84,7 +84,7 @@ ansible-galaxy collection init my_own_namespace.yandex_cloud_elk`
         path: /home/alex/tmp.txt
         content: 234
 ```
-Выложил коллекцию в репозиторий: ()
+
 Создал тарбол для коллекции:
 ```
 alex@example ~/repo/my_own_collection/my_own_namespace/yandex_cloud_elk (master) $ ansible-galaxy collection build
@@ -140,3 +140,6 @@ PLAY RECAP *********************************************************************
 localhost                  : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
 
 ```
+
+Ссылка на коллекцию: https://github.com/AlexDrEamer42/my_own_collection/tree/master/my_own_namespace
+Ссылка на тарбол: https://github.com/AlexDrEamer42/my_own_collection/blob/master/my_own_namespace-yandex_cloud_elk-1.0.0.tar.gz
