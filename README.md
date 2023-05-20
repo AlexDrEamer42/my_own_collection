@@ -66,7 +66,7 @@ localhost                  : ok=2    changed=0    unreachable=0    failed=0    s
 
 Инициализировал новую collection: 
 ```
-ansible-galaxy collection init my_own_namespace.yandex_cloud_elk`
+ansible-galaxy collection init my_own_namespace.yandex_cloud_elk
 ```
 Перенёс модуль в созданную collection, преобразовал в роль. Плейбук для роли:
 
@@ -142,4 +142,5 @@ localhost                  : ok=2    changed=0    unreachable=0    failed=0    s
 ```
 
 Ссылка на коллекцию: https://github.com/AlexDrEamer42/my_own_collection/tree/master/my_own_namespace
+
 Ссылка на тарбол: https://github.com/AlexDrEamer42/my_own_collection/blob/master/my_own_namespace-yandex_cloud_elk-1.0.0.tar.gz
