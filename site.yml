@@ -1,0 +1,5 @@
+---
+- name: Call module
+  hosts: localhost
+  roles:
+    - my_own_module
