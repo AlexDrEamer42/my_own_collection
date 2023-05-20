@@ -68,20 +68,75 @@ localhost                  : ok=2    changed=0    unreachable=0    failed=0    s
 ```
 ansible-galaxy collection init my_own_namespace.yandex_cloud_elk`
 ```
-Перенёс модуль в созданную collection
+Перенёс модуль в созданную collection, преобразовал в роль. Плейбук для роли:
 
-**Шаг 10.** Single task playbook преобразуйте в single task role и перенесите в collection. У role должны быть default всех параметров module.
+```
+---
+- hosts: localhost
+  collections:
+    - my_own_namespace.yandex_cloud_elk
 
-**Шаг 11.** Создайте playbook для использования этой role.
+  tasks:
+    - import_role:
+        name: role_for_module
 
-**Шаг 12.** Заполните всю документацию по collection, выложите в свой репозиторий, поставьте тег `1.0.0` на этот коммит.
+    - my_own_module:
+        path: /home/alex/tmp.txt
+        content: 234
+```
+Выложил коллекцию в репозиторий: ()
+Создал тарбол для коллекции:
+```
+alex@example ~/repo/my_own_collection/my_own_namespace/yandex_cloud_elk (master) $ ansible-galaxy collection build
+Created collection for my_own_namespace.yandex_cloud_elk at /home/alex/repo/my_own_collection/my_own_namespace/yandex_cloud_elk/my_own_namespace-yandex_cloud_elk-1.0.0.tar.gz
 
-**Шаг 13.** Создайте .tar.gz этой collection: `ansible-galaxy collection build` в корневой директории collection.
+```
 
-**Шаг 14.** Создайте ещё одну директорию любого наименования, перенесите туда single task playbook и архив c collection.
+Установил коллекцию из тарбола:
 
-**Шаг 15.** Установите collection из локального архива: `ansible-galaxy collection install <archivename>.tar.gz`.
+```
+alex@example ~/repo/my_own_collection/test_tarball (master) $ ansible-galaxy collection install my_own_namespace-yandex_cloud_elk-1.0.0.tar.gz
+Starting galaxy collection install process
+Process install dependency map
+Starting collection install process
+Installing 'my_own_namespace.yandex_cloud_elk:1.0.0' to '/home/alex/.ansible/collections/ansible_collections/my_own_namespace/yandex_cloud_elk'
+my_own_namespace.yandex_cloud_elk:1.0.0 was installed successfully
+```
 
-**Шаг 16.** Запустите playbook, убедитесь, что он работает.
+Проверил работу плейбука:
 
-**Шаг 17.** В ответ необходимо прислать ссылки на collection и tar.gz архив, а также скриншоты выполнения пунктов 4, 6, 15 и 16.
+```
+alex@example ~/repo/my_own_collection/test_tarball (master) $ ansible-playbook -v site.yml 
+Using /home/alex/.ansible.cfg as config file
+[WARNING]: No inventory was parsed, only implicit localhost is available
+[WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost does not match 'all'
+
+PLAY [localhost] **************************************************************************************************************************************************************************************************************
+
+TASK [Gathering Facts] ********************************************************************************************************************************************************************************************************
+ok: [localhost]
+
+TASK [my_own_module] **********************************************************************************************************************************************************************************************************
+changed: [localhost] => {"changed": true, "message": "File is created"}
+
+PLAY RECAP ********************************************************************************************************************************************************************************************************************
+localhost                  : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+```
+```
+alex@example ~/repo/my_own_collection/test_tarball (master) $ ansible-playbook -v site.yml 
+Using /home/alex/.ansible.cfg as config file
+[WARNING]: No inventory was parsed, only implicit localhost is available
+[WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost does not match 'all'
+
+PLAY [localhost] **************************************************************************************************************************************************************************************************************
+
+TASK [Gathering Facts] ********************************************************************************************************************************************************************************************************
+ok: [localhost]
+
+TASK [my_own_module] **********************************************************************************************************************************************************************************************************
+ok: [localhost] => {"changed": false, "message": "File exists"}
+
+PLAY RECAP ********************************************************************************************************************************************************************************************************************
+localhost                  : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+```

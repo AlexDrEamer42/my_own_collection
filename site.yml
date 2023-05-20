@@ -1,5 +1,12 @@
 ---
-- name: Call module
-  hosts: localhost
-  roles:
-    - my_own_module
+- hosts: localhost
+  collections:
+    - my_own_namespace.yandex_cloud_elk
+
+  tasks:
+    - import_role:
+        name: role_for_module
+
+    - my_own_module:
+        path: /home/alex/tmp.txt
+        content: 234
